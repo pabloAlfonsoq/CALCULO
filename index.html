@@ -3,384 +3,394 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NovaCalc - Curso de Cálculo</title>
+    <title>IntegraX - Asistente de Cálculo Integral</title>
 
-    <!-- 1. Estilos CSS: Todo el diseño futurista y minimalista va aquí -->
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+    <!-- KaTeX para renderizar LaTeX -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.css" integrity="sha384-Xi8rHCmBmhbuyyhbI88391ZKP2dmfnOl4rT9ZfRI7zTDRGbadJnBFmkNsFvm/iIw" crossorigin="anonymous">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.js" integrity="sha384-X/XCfMm41VSsqRNCh5AnSyTMiRztJ8HbM+KRXvaQGEYNgoGzOPKjCVrPOTifPAeK" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/contrib/auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script>
 
-        :root {
-            --bg-dark: #0D0C1D;
-            --accent-cyan: #61DAFB;
-            --accent-magenta: #C850C0;
-            --text-primary: #E0E0E0;
-            --text-secondary: #8A8A8A;
-            --glass-bg: rgba(255, 255, 255, 0.05);
-            --glass-border: rgba(255, 255, 255, 0.1);
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        body {
-            font-family: 'Poppins', sans-serif;
-            background-color: var(--bg-dark);
-            color: var(--text-primary);
-            overflow: hidden; /* Evita el scroll en el body principal */
-        }
-
-        .app-container {
-            display: flex;
-            height: 100vh; /* Ocupa toda la altura de la ventana */
-        }
-
-        /* --- Sidebar --- */
-        .sidebar {
-            width: 320px;
-            flex-shrink: 0; /* Evita que el sidebar se encoja */
-            background-color: var(--bg-dark);
-            padding: 2rem 1.5rem;
-            border-right: 1px solid var(--glass-border);
-            display: flex;
-            flex-direction: column;
-            overflow-y: auto; /* Permite scroll solo en el sidebar si es necesario */
-        }
-
-        .sidebar-header {
-            font-size: 1.5rem;
-            font-weight: 700;
-            margin-bottom: 2rem;
-            color: var(--accent-cyan);
-            text-align: center;
-        }
-
-        .sidebar-nav ul {
-            list-style-type: none;
-        }
-
-        .sidebar-nav li {
-            padding: 0.8rem 1rem;
-            margin-bottom: 0.5rem;
-            cursor: pointer;
-            border-radius: 8px;
-            transition: all 0.3s;
-            font-weight: 400;
-            color: var(--text-secondary);
-            border: 1px solid transparent;
-        }
-
-        .sidebar-nav li:hover {
-            background-color: var(--glass-bg);
-            color: var(--text-primary);
-        }
-
-        .sidebar-nav li.active {
-            background-color: var(--glass-bg);
-            color: var(--accent-cyan);
-            font-weight: 600;
-            border: 1px solid var(--accent-cyan);
-            transform: scale(1.02);
-        }
-
-        /* --- Main Content --- */
-        .main-content {
-            flex-grow: 1; /* Ocupa el espacio restante */
-            padding: 2rem 3rem;
-            overflow-y: auto; /* Permite scroll solo en el contenido principal */
-        }
-
-        .lesson-header h1 {
-            font-size: 2.5rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-        }
-
-        .lesson-header .tagline {
-            font-size: 1.2rem;
-            color: var(--accent-cyan);
-            margin-bottom: 2.5rem;
-        }
-
-        /* --- Lesson Card --- */
-        .lesson-card {
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border-radius: 12px;
-            padding: 1.5rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .lesson-card h3 {
-            color: var(--accent-cyan);
-            margin-bottom: 1rem;
-            font-size: 1.2rem;
-            padding-bottom: 0.5rem;
-            border-bottom: 1px solid var(--glass-border);
-        }
-
-        .lesson-card p, .lesson-card li {
-            line-height: 1.7;
-            color: var(--text-primary);
-        }
-
-        .lesson-card ul {
-            list-style-position: inside;
-            padding-left: 5px;
-        }
-        
-        .lesson-card ul li {
-          margin-bottom: 0.5rem;
-        }
-        
-        .lesson-card strong {
-          color: var(--accent-cyan);
-        }
-
-        /* --- Progress Bar --- */
-        .progress-container {
-            margin-top: auto; /* Pushes the bar to the bottom */
-            padding-top: 1rem;
-        }
-
-        .progress-bar {
-            width: 100%;
-            height: 8px;
-            background-color: var(--glass-bg);
-            border-radius: 4px;
-            overflow: hidden;
-            margin-top: 0.5rem;
-        }
-
-        .progress-bar-fill {
-            height: 100%;
-            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-magenta));
-            border-radius: 4px;
-            transition: width 0.5s ease-in-out;
-        }
-    </style>
-
-    <!-- 2. Scripts de React y Babel desde CDN -->
+    <!-- Scripts de React y Babel -->
     <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
+    <!-- Estilos CSS -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Roboto+Mono:wght@400;500&display=swap');
+
+        :root {
+            --bg-light: #F8F9FA;
+            --primary-color: #007BFF;
+            --dark-text: #212529;
+            --light-text: #6C757D;
+            --border-color: #DEE2E6;
+            --code-bg: #E9ECEF;
+        }
+
+        body {
+            font-family: 'Lato', sans-serif;
+            background-color: var(--bg-light);
+            color: var(--dark-text);
+            line-height: 1.7;
+        }
+        
+        #root {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 280px;
+            flex-shrink: 0;
+            background-color: #FFFFFF;
+            border-right: 1px solid var(--border-color);
+            padding: 2rem 1.5rem;
+        }
+
+        .sidebar h1 {
+            font-size: 1.8rem;
+            color: var(--primary-color);
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .sidebar li {
+            padding: 0.75rem 1rem;
+            margin-bottom: 0.5rem;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+            font-weight: 500;
+        }
+
+        .sidebar li:hover {
+            background-color: #E9ECEF;
+        }
+
+        .sidebar li.active {
+            background-color: var(--primary-color);
+            color: #FFFFFF;
+        }
+
+        .main-content {
+            flex-grow: 1;
+            padding: 2rem 3rem;
+            overflow-y: auto;
+        }
+
+        .topic-header {
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 0.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .topic-header h2 {
+            font-size: 2.2rem;
+        }
+
+        .section {
+            margin-bottom: 2.5rem;
+        }
+
+        .section h3 {
+            font-size: 1.5rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+        
+        .step {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+        
+        .step-number {
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            flex-shrink: 0;
+            margin-right: 1rem;
+        }
+        
+        .step-content {
+            flex-grow: 1;
+        }
+        
+        code {
+            font-family: 'Roboto Mono', monospace;
+            background-color: var(--code-bg);
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            color: #C7254E;
+        }
+        
+        .exercise-list li {
+          margin-bottom: 1rem;
+          padding-left: 1rem;
+        }
+        
+        .katex-display {
+            margin: 1.5em 0 !important;
+        }
+    </style>
 </head>
 <body>
-
-    <!-- 3. El punto de entrada para nuestra aplicación React -->
     <div id="root"></div>
 
-    <!-- 4. Toda la lógica de la aplicación React va aquí, dentro de un script de tipo "text/babel" -->
     <script type="text/babel">
-        // --- A. DATOS DEL CURSO ---
-        const courseData = [
-          {
-            week: 1,
-            title: "Nivelación y Funciones",
-            tagline: "El Terreno de Juego",
-            objectives: [
-              "Resolver ecuaciones e inecuaciones algebraicas.",
-              "Definir qué es una función, su dominio y su rango.",
-              "Identificar y graficar funciones básicas.",
-            ],
-            concepts: {
-              title: "Conceptos Clave",
-              content: "El cálculo es el estudio de funciones. El álgebra es el lenguaje que usamos. Una función es una máquina que toma una entrada 'x' y devuelve una única salida 'y'. El 'Dominio' son todas las 'x' permitidas, y el 'Rango' son todas las 'y' resultantes."
+        const { useState, useEffect } = React;
+
+        // --- DATOS DEL CURSO DE INTEGRALES ---
+        const integralTopics = [
+            {
+                id: 'inmediatas',
+                title: 'Integrales Inmediatas',
+                content: {
+                    when: "Usa este método cuando la función a integrar (el integrando) es la derivada directa de una función conocida (potencias, exponenciales, trigonométricas, etc.). Son las más básicas y se resuelven consultando una tabla de integrales.",
+                    recipe: [
+                        "Identifica la forma de la función.",
+                        "Busca en tu tabla de integrales la fórmula correspondiente.",
+                        "Aplica la fórmula y no olvides sumar la constante de integración 'C'."
+                    ],
+                    example: {
+                        problem: "Calcular $$ \\int (3x^2 + \\cos(x)) \\,dx $$",
+                        solution: [
+                            { step: 1, text: "Separamos la integral en dos partes usando la propiedad de la suma: $$ \\int 3x^2 \\,dx + \\int \\cos(x) \\,dx $$" },
+                            { step: 2, text: "Para la primera parte, usamos la regla de la potencia $$\\int x^n \\,dx = \\frac{x^{n+1}}{n+1}$$. Sacamos la constante 3: $$ 3 \\int x^2 \\,dx = 3 \\left(\\frac{x^{2+1}}{2+1}\\right) = 3 \\left(\\frac{x^3}{3}\\right) = x^3 $$" },
+                            { step: 3, text: "Para la segunda parte, sabemos por la tabla que la integral de $$\\cos(x)$$ es $$\\sin(x)$$. $$ \\int \\cos(x) \\,dx = \\sin(x) $$" },
+                            { step: 4, text: "Juntamos los resultados y añadimos la constante de integración: $$ x^3 + \\sin(x) + C $$" }
+                        ]
+                    },
+                    exercises: [
+                        "$$ \\int (5x^4 - 2x + 7) \\,dx $$",
+                        "$$ \\int (e^x + \\sec^2(x)) \\,dx $$",
+                        "$$ \\int \\frac{1}{x} \\,dx $$"
+                    ]
+                }
             },
-            example: {
-              title: "Ejemplo Guiado: Dominio y Rango",
-              problem: "Encontrar el dominio y rango de f(x) = √(x - 3)",
-              steps: [
-                "Identificar la restricción: El interior de una raíz cuadrada no puede ser negativo.",
-                "Plantear la inecuación: x - 3 ≥ 0.",
-                "Resolver: x ≥ 3. El dominio es [3, ∞).",
-                "Analizar la salida: La raíz cuadrada siempre devuelve un número no negativo. El valor más pequeño es √0 = 0.",
-                "Conclusión: El rango es [0, ∞)."
-              ]
+            {
+                id: 'sustitucion',
+                title: 'Método de Sustitución',
+                content: {
+                    when: "Es la 'Regla de la Cadena' a la inversa. Úsalo cuando veas una función y su derivada (o un múltiplo de ella) multiplicándose dentro de la misma integral.",
+                    recipe: [
+                        "Elige una parte de la integral como 'u' (generalmente lo que está dentro de un paréntesis, una raíz o el exponente).",
+                        "Calcula la derivada de 'u' con respecto a x: du/dx.",
+                        "Despeja 'dx' para obtener: dx = du / (derivada de u).",
+                        "Sustituye 'u' y 'dx' en la integral original. Si lo hiciste bien, todas las 'x' deberían desaparecer.",
+                        "Resuelve la nueva integral en términos de 'u'.",
+                        "Vuelve a sustituir 'u' por su expresión original en 'x'."
+                    ],
+                    example: {
+                        problem: "Calcular $$ \\int 2x \\sqrt{x^2+1} \\,dx $$",
+                        solution: [
+                            { step: 1, text: "Identificamos una función ($$x^2+1$$) y su derivada ($$2x$$). Elegimos $$ u = x^2+1 $$." },
+                            { step: 2, text: "Calculamos la derivada: $$ \\frac{du}{dx} = 2x $$." },
+                            { step: 3, text: "Despejamos $$du$$: $$ du = 2x \\,dx $$." },
+                            { step: 4, text: "Sustituimos en la integral. Observa que $$2x \\,dx$$ se reemplaza por $$du$$ y $$x^2+1$$ por $$u$$: $$ \\int \\sqrt{u} \\,du = \\int u^{1/2} \\,du $$" },
+                            { step: 5, text: "Resolvemos la integral simple con la regla de la potencia: $$ \\frac{u^{1/2+1}}{1/2+1} = \\frac{u^{3/2}}{3/2} = \\frac{2}{3}u^{3/2} + C $$" },
+                            { step: 6, text: "Volvemos a la variable original 'x': $$ \\frac{2}{3}(x^2+1)^{3/2} + C $$" }
+                        ]
+                    },
+                    exercises: [
+                        "$$ \\int \\cos(x) \\sin^3(x) \\,dx $$",
+                        "$$ \\int \\frac{e^{\\sqrt{x}}}{\\sqrt{x}} \\,dx $$",
+                        "$$ \\int (x+1)^5 \\,dx $$"
+                    ]
+                }
             },
-            practice: {
-              title: "Ejercicios de Práctica",
-              items: [
-                "Básico: Hallar el dominio de g(x) = 1 / (x + 2).",
-                "Intermedio: Hallar el dominio y rango de h(x) = x² + 5.",
-                "Desafío: Hallar el dominio de k(x) = (√x) / (x - 4)."
-              ]
+            {
+                id: 'partes',
+                title: 'Integración por Partes',
+                content: {
+                    when: "Usa este método cuando tienes el producto de dos funciones que no se simplifican con la sustitución. Típicamente, una función polinómica por una trigonométrica o exponencial (ej. $$\\int x e^x dx$$).",
+                    recipe: [
+                        "Aplica la fórmula: ∫u dv = uv - ∫v du.",
+                        "Elige 'u' y 'dv' del integrando original. Una buena regla es LIATE (Logarítmicas, Inversas, Algebraicas, Trigonométricas, Exponenciales). La que aparezca primero en la lista es una buena candidata para 'u'.",
+                        "Calcula 'du' (derivando 'u') y 'v' (integrando 'dv').",
+                        "Sustituye todo en la fórmula.",
+                        "Resuelve la nueva integral ∫v du. A veces, hay que volver a aplicar el método."
+                    ],
+                    example: {
+                        problem: "Calcular $$ \\int x \\cos(x) \\,dx $$",
+                        solution: [
+                            { step: 1, text: "Tenemos un producto de una algebraica ($$x$$) y una trigonométrica ($$\\cos(x)$$). Siguiendo LIATE, elegimos $$ u = x $$ y $$ dv = \\cos(x) \\,dx $$." },
+                            { step: 2, text: "Derivamos 'u' e integramos 'dv': $$ du = dx $$ y $$ v = \\int \\cos(x) \\,dx = \\sin(x) $$." },
+                            { step: 3, text: "Aplicamos la fórmula $$ uv - \\int v \\,du $$: $$ x \\sin(x) - \\int \\sin(x) \\,dx $$" },
+                            { step: 4, text: "Resolvemos la integral restante: $$ \\int \\sin(x) \\,dx = -\\cos(x) $$." },
+                            { step: 5, text: "Juntamos todo: $$ x \\sin(x) - (-\\cos(x)) + C = x \\sin(x) + \\cos(x) + C $$" }
+                        ]
+                    },
+                    exercises: [
+                        "$$ \\int x e^x \\,dx $$",
+                        "$$ \\int \\ln(x) \\,dx $$ (Pista: u = ln(x), dv = dx)",
+                        "$$ \\int x^2 \\sin(x) \\,dx $$ (Requiere dos aplicaciones)"
+                    ]
+                }
+            },
+            {
+                id: 'fracciones_simples',
+                title: 'Fracciones Simples (Lineales Distintos)',
+                content: {
+                    when: "Se usa para integrar funciones racionales (un polinomio dividido por otro), donde el denominador se puede factorizar en términos lineales distintos.",
+                    recipe: [
+                        "Asegúrate que el grado del numerador es menor que el del denominador. Si no, haz una división larga primero.",
+                        "Factoriza el denominador completamente. Por ejemplo: $$x^2 - 4 = (x-2)(x+2)$$.",
+                        "Descompón la fracción en una suma de fracciones más simples. Para cada factor lineal $$(ax+b)$$, se crea un término $$A/(ax+b)$$.",
+                        "Encuentra los valores de las constantes (A, B, C...) resolviendo el sistema de ecuaciones.",
+                        "Integra cada fracción simple por separado. Serán integrales de logaritmos naturales."
+                    ],
+                    example: {
+                        problem: "Calcular $$ \\int \\frac{1}{x^2 - 4} \\,dx $$",
+                        solution: [
+                            { step: 1, text: "Factorizamos el denominador: $$ x^2 - 4 = (x-2)(x+2) $$." },
+                            { step: 2, text: "Descomponemos la fracción: $$ \\frac{1}{(x-2)(x+2)} = \\frac{A}{x-2} + \\frac{B}{x+2} $$." },
+                            { step: 3, text: "Multiplicamos todo por el denominador común para eliminar las fracciones: $$ 1 = A(x+2) + B(x-2) $$." },
+                            { step: 4, text: "Para encontrar A y B, usamos valores inteligentes. Si x=2: $$1 = A(4) \\Rightarrow A = 1/4$$. Si x=-2: $$1 = B(-4) \\Rightarrow B = -1/4$$. " },
+                            { step: 5, text: "Reescribimos la integral: $$ \\int \\left( \\frac{1/4}{x-2} - \\frac{1/4}{x+2} \\right) \\,dx = \\frac{1}{4}\\int \\frac{1}{x-2}\\,dx - \\frac{1}{4}\\int \\frac{1}{x+2}\\,dx $$" },
+                            { step: 6, text: "Integramos: $$ \\frac{1}{4}\\ln|x-2| - \\frac{1}{4}\\ln|x+2| + C $$" }
+                        ]
+                    },
+                    exercises: [
+                        "$$ \\int \\frac{5x-3}{x^2-2x-3} \\,dx $$",
+                        "$$ \\int \\frac{1}{x(x+1)} \\,dx $$"
+                    ]
+                }
+            },
+            {
+                id: 'aproximacion',
+                title: 'Aproximación Numérica',
+                content: {
+                    when: "Cuando una integral es muy difícil o imposible de resolver analíticamente, usamos métodos numéricos para encontrar un valor aproximado de la integral definida.",
+                    recipe: [
+                        "**Regla del Trapecio:** Divide el área bajo la curva en 'n' trapecios. La fórmula es: $$ \\int_a^b f(x)dx \\approx \\frac{\\Delta x}{2} [f(x_0) + 2f(x_1) + 2f(x_2) + ... + 2f(x_{n-1}) + f(x_n)] $$, donde $$\\Delta x = (b-a)/n$$.",
+                        "**Regla de Simpson:** Es más precisa porque usa parábolas en lugar de rectas. Requiere un número par de intervalos 'n'. La fórmula es: $$ \\int_a^b f(x)dx \\approx \\frac{\\Delta x}{3} [f(x_0) + 4f(x_1) + 2f(x_2) + 4f(x_3) + ... + 4f(x_{n-1}) + f(x_n)] $$."
+                    ],
+                    example: {
+                        problem: "Aproximar $$ \\int_0^2 x^2 \\,dx $$ usando la Regla del Trapecio con n=4.",
+                        solution: [
+                            { step: 1, text: "Calculamos $$\\Delta x = (2-0)/4 = 0.5$$. Los puntos de x serán: 0, 0.5, 1, 1.5, 2." },
+                            { step: 2, text: "Calculamos f(x) = x² en cada punto: f(0)=0, f(0.5)=0.25, f(1)=1, f(1.5)=2.25, f(2)=4." },
+                            { step: 3, text: "Aplicamos la fórmula del Trapecio: $$ T_4 = \\frac{0.5}{2} [f(0) + 2f(0.5) + 2f(1) + 2f(1.5) + f(2)] $$" },
+                            { step: 4, text: "Sustituimos los valores: $$ T_4 = 0.25 [0 + 2(0.25) + 2(1) + 2(2.25) + 4] = 0.25 [0 + 0.5 + 2 + 4.5 + 4] = 0.25 [11] = 2.75 $$" },
+                            { step: 5, text: "El valor exacto es $$ \\int_0^2 x^2 dx = [x^3/3]_0^2 = 8/3 \\approx 2.667 $$. Nuestra aproximación es bastante buena." }
+                        ]
+                    },
+                    exercises: [
+                        "Usa la Regla de Simpson con n=4 para aproximar la misma integral $$ \\int_0^2 x^2 \\,dx $$ y compara el resultado.",
+                        "Aproxima $$ \\int_1^2 \\frac{1}{x} \\,dx $$ con la Regla del Trapecio y n=4. (El valor exacto es ln(2) ≈ 0.693)."
+                    ]
+                }
             }
-          },
-          {
-            week: 2,
-            title: "Funciones y Transformaciones",
-            tagline: "El Catálogo de Herramientas",
-            objectives: ["Reconocer el catálogo de funciones (polinómicas, racionales, etc.)", "Aplicar transformaciones a la gráfica de una función.", "Calcular la composición de dos funciones, f(g(x))."],
-            concepts: {
-              title: "Conceptos Clave",
-              content: "Las transformaciones rígidas (desplazamientos, reflexiones) mueven la gráfica sin cambiar su forma. La composición f(g(x)) significa aplicar 'g' primero y luego 'f' al resultado."
-            },
-            example: {
-              title: "Ejemplo Guiado: Transformación",
-              problem: "Dada f(x) = x², describir la gráfica de g(x) = (x - 3)² + 2.",
-              steps: ["Función base: La parábola y = x².", "Transformación horizontal: 'x - 3' mueve la gráfica 3 unidades a la DERECHA.", "Transformación vertical: '+ 2' mueve la gráfica 2 unidades hacia ARRIBA.", "Conclusión: Es la parábola original con su vértice en el punto (3, 2)."]
-            },
-            practice: {
-              title: "Ejercicios de Práctica",
-              items: ["Describe la transformación de f(x) = |x| a g(x) = -|x + 1|.", "Si f(x) = sin(x) y g(x) = x³, calcula f(g(x))."]
-            }
-          },
-          {
-            week: 3,
-            title: "Límites",
-            tagline: "La Idea Central del Cálculo",
-            objectives: ["Interpretar el significado de un límite.", "Resolver límites indeterminados de la forma 0/0.", "Interpretar límites al infinito como asíntotas horizontales."],
-            concepts: {
-              title: "Conceptos Clave",
-              content: "Un límite describe a qué valor se acerca una función cuando 'x' se acerca a un punto, sin importar el valor exacto en ese punto. La forma 0/0 es una señal para hacer más trabajo algebraico (factorizar, racionalizar)."
-            },
-            example: {
-              title: "Ejemplo Guiado: Límite Indeterminado",
-              problem: "Calcular el límite de (x² - 4) / (x - 2) cuando x tiende a 2.",
-              steps: ["Sustitución directa da 0/0. ¡Indeterminación!", "Factorizar el numerador: x² - 4 = (x - 2)(x + 2).", "Simplificar: Se cancela el término (x - 2).", "Evaluar el límite simplificado: lim (x + 2) cuando x tiende a 2 es 2 + 2 = 4."]
-            },
-            practice: {
-              title: "Ejercicios de Práctica",
-              items: ["Calcula lim (x²-1)/(x-1) cuando x tiende a 1.", "Calcula lim (3x²+1)/(x²-5) cuando x tiende a infinito."]
-            }
-          },
-           {
-            week: 4,
-            title: "La Derivada",
-            tagline: "El Cambio Instantáneo",
-            objectives: ["Definir la continuidad en un punto.", "Entender la derivada como la pendiente de la recta tangente.", "Calcular una derivada usando la definición formal con límites."],
-            concepts: {
-              title: "Conceptos Clave",
-              content: "La derivada f'(x) nos da la tasa de cambio instantánea de una función. Geométricamente, es la pendiente de la línea tangente a la curva en un punto. Se define como el límite: f'(x) = lim (h->0) de [f(x+h) - f(x)] / h."
-            },
-            example: {
-              title: "Ejemplo Guiado: Derivada por Definición",
-              problem: "Encontrar la derivada de f(x) = x² usando la definición.",
-              steps: ["Plantear el límite: lim (h->0) de [(x+h)² - x²] / h.", "Expandir (x+h)²: x² + 2xh + h².", "Simplificar el numerador: (x² + 2xh + h² - x²) / h = (2xh + h²) / h.", "Factorizar y cancelar h: h(2x + h) / h = 2x + h.", "Evaluar el límite: lim (h->0) de (2x + h) es 2x."]
-            },
-            practice: {
-              title: "Ejercicios de Práctica",
-              items: ["Usando la definición, encuentra la derivada de f(x) = 3x + 2.", "Explica por qué una función no puede ser derivable en un punto si tiene un 'pico' (como y=|x| en x=0)."]
-            }
-          }
         ];
 
-        // --- B. COMPONENTES DE REACT ---
+        // --- COMPONENTES DE REACT ---
+        
+        function TopicView({ topic }) {
+            useEffect(() => {
+                // Re-renderizar LaTeX cuando el tema cambia
+                if (window.renderMathInElement) {
+                    window.renderMathInElement(document.body, {
+                        delimiters: [
+                            {left: '$$', right: '$$', display: true},
+                            {left: '$', right: '$', display: false}
+                        ]
+                    });
+                }
+            }, [topic]);
 
-        const ProgressBar = ({ current, total }) => {
-            const progressPercentage = total > 0 ? (current / total) * 100 : 0;
-            return (
-                <div className="progress-container">
-                    <p>{`Progreso: Semana ${current} de ${total}`}</p>
-                    <div className="progress-bar">
-                        <div
-                            className="progress-bar-fill"
-                            style={{ width: `${progressPercentage}%` }}
-                        />
+            if (!topic) {
+                return (
+                    <div className="main-content">
+                        <div className="topic-header">
+                            <h2>Bienvenido a IntegraX</h2>
+                        </div>
+                        <p>Selecciona un tema del menú para comenzar a dominar el cálculo integral.</p>
                     </div>
-                </div>
-            );
-        };
-
-        const Sidebar = ({ lessons, currentWeek, onSelectWeek }) => {
-            return (
-                <aside className="sidebar">
-                    <div>
-                        <h2 className="sidebar-header">NovaCalc</h2>
-                        <nav className="sidebar-nav">
-                            <ul>
-                                {lessons.map((lesson) => (
-                                    <li
-                                        key={lesson.week}
-                                        className={lesson.week === currentWeek ? 'active' : ''}
-                                        onClick={() => onSelectWeek(lesson.week)}
-                                    >
-                                        Semana {lesson.week}: {lesson.title}
-                                    </li>
-                                ))}
-                            </ul>
-                        </nav>
-                    </div>
-                    <ProgressBar current={currentWeek} total={lessons.length} />
-                </aside>
-            );
-        };
-
-        const LessonCard = ({ title, children }) => {
-            return (
-                <div className="lesson-card">
-                    <h3>{title}</h3>
-                    {children}
-                </div>
-            );
-        };
-
-        const LessonView = ({ lesson }) => {
-            if (!lesson) {
-                return <div className="main-content"><h1>Bienvenido a NovaCalc</h1><p>Selecciona una lección del menú para comenzar tu viaje por el cálculo.</p></div>;
+                );
             }
 
-            return (
-                <main className="main-content">
-                    <header className="lesson-header">
-                        <h1>{lesson.title}</h1>
-                        <p className="tagline">{lesson.tagline}</p>
-                    </header>
-
-                    <LessonCard title="🎯 Objetivos de Aprendizaje">
-                        <ul>
-                            {lesson.objectives.map((obj, index) => <li key={index}>{obj}</li>)}
-                        </ul>
-                    </LessonCard>
-
-                    <LessonCard title="💡 Conceptos Clave">
-                        <p>{lesson.concepts.content}</p>
-                    </LessonCard>
-
-                    <LessonCard title="🔬 Ejemplo Guiado">
-                        <p><strong>Problema:</strong> {lesson.example.problem}</p>
-                        <br />
-                        <strong>Pasos:</strong>
-                        <ul>
-                            {lesson.example.steps.map((step, index) => <li key={index}>{step}</li>)}
-                        </ul>
-                    </LessonCard>
-
-                    <LessonCard title="✍️ Práctica">
-                        <ul>
-                            {lesson.practice.items.map((item, index) => <li key={index}>{item}</li>)}
-                        </ul>
-                    </LessonCard>
-                </main>
-            );
-        };
-        
-        // --- C. COMPONENTE PRINCIPAL DE LA APP ---
-
-        function App() {
-            const [currentWeek, setCurrentWeek] = React.useState(1);
-            const activeLesson = courseData.find(lesson => lesson.week === currentWeek);
+            const { title, content } = topic;
 
             return (
-                <div className="app-container">
-                    <Sidebar
-                        lessons={courseData}
-                        currentWeek={currentWeek}
-                        onSelectWeek={setCurrentWeek}
-                    />
-                    <LessonView lesson={activeLesson} />
+                <div className="main-content">
+                    <div className="topic-header">
+                        <h2>{title}</h2>
+                    </div>
+
+                    <div className="section">
+                        <h3>¿Cuándo usar este método?</h3>
+                        <p>{content.when}</p>
+                    </div>
+
+                    <div className="section">
+                        <h3>La Receta (Paso a Paso)</h3>
+                        {content.recipe.map((stepText, index) => (
+                            <div key={index} className="step">
+                                <div className="step-number">{index + 1}</div>
+                                <div className="step-content">{stepText}</div>
+                            </div>
+                        ))}
+                    </div>
+
+                    <div className="section">
+                        <h3>Ejemplo Resuelto</h3>
+                        <p><strong>Problema:</strong> {content.example.problem}</p>
+                        {content.example.solution.map((sol, index) => (
+                             <div key={index} className="step">
+                                <div className="step-number">{sol.step}</div>
+                                <div className="step-content" dangerouslySetInnerHTML={{ __html: sol.text }}></div>
+                            </div>
+                        ))}
+                    </div>
+                    
+                    <div className="section">
+                        <h3>Ejercicios para Practicar</h3>
+                        <ol className="exercise-list">
+                            {content.exercises.map((ex, index) => <li key={index}>{ex}</li>)}
+                        </ol>
+                    </div>
                 </div>
             );
         }
 
-        // --- D. RENDERIZAR LA APP EN EL DOM ---
-        
+        function App() {
+            const [activeTopicId, setActiveTopicId] = useState(integralTopics[0].id);
+            const activeTopic = integralTopics.find(t => t.id === activeTopicId);
+
+            return (
+                <React.Fragment>
+                    <aside className="sidebar">
+                        <h1>IntegraX</h1>
+                        <ul>
+                            {integralTopics.map(topic => (
+                                <li
+                                    key={topic.id}
+                                    className={topic.id === activeTopicId ? 'active' : ''}
+                                    onClick={() => setActiveTopicId(topic.id)}
+                                >
+                                    {topic.title}
+                                </li>
+                            ))}
+                        </ul>
+                    </aside>
+                    <TopicView topic={activeTopic} />
+                </React.Fragment>
+            );
+        }
+
         const root = ReactDOM.createRoot(document.getElementById('root'));
         root.render(<App />);
 
