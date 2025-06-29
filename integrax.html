@@ -8,300 +8,32 @@
     <!-- 1. KaTeX para renderizar LaTeX (fórmulas matemáticas) -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css" integrity="sha384-vKruJ+a13U8yHIkAyOUuDfiCv6hubIiEXfi19GpKPvr7sKOeMyGScbuGq+qdSMSC" crossorigin="anonymous">
     <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.js" integrity="sha384-PwRUT/YqgLwkQIHg2upSMGZ0zJsvcnKeyMgMwRHQTWMpGxMXS5EYYL1JEYma9wvP" crossorigin="anonymous"></script>
-    
-    <!-- Script de auto-renderizado. React lo llamará, por eso no tiene 'onload'. -->
     <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/contrib/auto-render.min.js" integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous"></script>
 
     <!-- 2. Scripts de React y Babel -->
-    <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
-    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script defer src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+    <script defer src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+    <script defer src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
     <!-- 3. Estilos CSS -->
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Roboto+Mono:wght@400;500&display=swap');
-
-        :root {
-            --bg-light: #F8F9FA;
-            --primary-color: #007BFF;
-            --dark-text: #212529;
-            --light-text: #6C757D;
-            --border-color: #DEE2E6;
-            --code-bg: #E9ECEF;
-        }
-
-        body {
-            font-family: 'Lato', sans-serif;
-            background-color: var(--bg-light);
-            color: var(--dark-text);
-            line-height: 1.7;
-        }
-        
-        #root {
-            display: flex;
-            min-height: 100vh;
-        }
-
-        .sidebar {
-            width: 280px;
-            flex-shrink: 0;
-            background-color: #FFFFFF;
-            border-right: 1px solid var(--border-color);
-            padding: 2rem 1.5rem;
-        }
-
-        .sidebar h1 {
-            font-size: 1.8rem;
-            color: var(--primary-color);
-            text-align: center;
-            margin-bottom: 2rem;
-            font-family: 'Roboto Mono', monospace;
-        }
-
-        .sidebar ul {
-            list-style: none;
-            padding: 0;
-        }
-
-        .sidebar li {
-            padding: 0.75rem 1rem;
-            margin-bottom: 0.5rem;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: all 0.2s ease-in-out;
-            font-weight: 500;
-        }
-
-        .sidebar li:hover {
-            background-color: #E9ECEF;
-        }
-
-        .sidebar li.active {
-            background-color: var(--primary-color);
-            color: #FFFFFF;
-        }
-
-        .main-content {
-            flex-grow: 1;
-            padding: 2rem 3rem;
-            overflow-y: auto;
-        }
-
-        .topic-header {
-            border-bottom: 2px solid var(--primary-color);
-            padding-bottom: 0.5rem;
-            margin-bottom: 2rem;
-        }
-
-        .topic-header h2 {
-            font-size: 2.2rem;
-        }
-
-        .section {
-            margin-bottom: 2.5rem;
-        }
-
-        .section h3 {
-            font-size: 1.5rem;
-            color: var(--primary-color);
-            margin-bottom: 1rem;
-        }
-        
-        .step {
-            display: flex;
-            align-items: flex-start;
-            margin-bottom: 1.2rem;
-        }
-        
-        .step-number {
-            background-color: var(--primary-color);
-            color: white;
-            border-radius: 50%;
-            width: 30px;
-            height: 30px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            flex-shrink: 0;
-            margin-right: 1rem;
-            margin-top: 5px;
-        }
-        
-        .step-content {
-            flex-grow: 1;
-        }
-        
-        code {
-            font-family: 'Roboto Mono', monospace;
-            background-color: var(--code-bg);
-            padding: 0.2rem 0.4rem;
-            border-radius: 4px;
-            color: #C7254E;
-        }
-        
-        .exercise-list li {
-          margin-bottom: 1rem;
-          padding: 1rem;
-          border-left: 3px solid var(--border-color);
-          list-style: none;
-        }
-        
-        .katex-display {
-            margin: 1.5em 0 !important;
-        }
+        :root{--bg-light:#F8F9FA;--primary-color:#007BFF;--dark-text:#212529;--light-text:#6C757D;--border-color:#DEE2E6;--code-bg:#E9ECEF}body{font-family:'Lato',sans-serif;background-color:var(--bg-light);color:var(--dark-text);line-height:1.7}#root{display:flex;min-height:100vh}.sidebar{width:280px;flex-shrink:0;background-color:#FFFFFF;border-right:1px solid var(--border-color);padding:2rem 1.5rem}.sidebar h1{font-size:1.8rem;color:var(--primary-color);text-align:center;margin-bottom:2rem;font-family:'Roboto Mono',monospace}.sidebar ul{list-style:none;padding:0}.sidebar li{padding:.75rem 1rem;margin-bottom:.5rem;border-radius:6px;cursor:pointer;transition:all .2s ease-in-out;font-weight:500}.sidebar li:hover{background-color:#E9ECEF}.sidebar li.active{background-color:var(--primary-color);color:#FFFFFF}.main-content{flex-grow:1;padding:2rem 3rem;overflow-y:auto}.topic-header{border-bottom:2px solid var(--primary-color);padding-bottom:.5rem;margin-bottom:2rem}.topic-header h2{font-size:2.2rem}.section{margin-bottom:2.5rem}.section h3{font-size:1.5rem;color:var(--primary-color);margin-bottom:1rem}.step{display:flex;align-items:flex-start;margin-bottom:1.2rem}.step-number{background-color:var(--primary-color);color:white;border-radius:50%;width:30px;height:30px;display:flex;align-items:center;justify-content:center;font-weight:bold;flex-shrink:0;margin-right:1rem;margin-top:5px}.step-content{flex-grow:1}code{font-family:'Roboto Mono',monospace;background-color:var(--code-bg);padding:.2rem .4rem;border-radius:4px;color:#C7254E}.exercise-list li{margin-bottom:1rem;padding:1rem;border-left:3px solid var(--border-color);list-style:none}.katex-display{margin:1.5em 0!important}
     </style>
 </head>
 <body>
-    <!-- El contenedor donde se montará la aplicación de React -->
     <div id="root"></div>
 
-    <!-- 4. Lógica de la aplicación con React -->
     <script type="text/babel">
         const { useState, useEffect, useRef } = React;
 
         // --- DATOS DEL CURSO DE INTEGRALES ---
         const integralTopics = [
-            {
-                id: 'inmediatas',
-                title: 'Integrales Inmediatas',
-                content: {
-                    when: "Usa este método cuando la función a integrar (el integrando) es la derivada directa de una función conocida (potencias, exponenciales, trigonométricas, etc.). Son las más básicas y se resuelven consultando una tabla de integrales.",
-                    recipe: [
-                        "Identifica la forma de la función.",
-                        "Busca en tu tabla de integrales la fórmula correspondiente.",
-                        "Aplica la fórmula y no olvides sumar la constante de integración 'C'."
-                    ],
-                    example: {
-                        problem: "$$ \\int (3x^2 + \\cos(x)) \\,dx $$",
-                        solution: [
-                            { step: 1, text: "Separamos la integral en dos partes usando la propiedad de la suma: $$ \\int 3x^2 \\,dx + \\int \\cos(x) \\,dx $$" },
-                            { step: 2, text: "Para la primera parte, usamos la regla de la potencia $$\\int x^n \\,dx = \\frac{x^{n+1}}{n+1}$$. Sacamos la constante 3: $$ 3 \\int x^2 \\,dx = 3 \\left(\\frac{x^{2+1}}{2+1}\\right) = 3 \\left(\\frac{x^3}{3}\\right) = x^3 $$" },
-                            { step: 3, text: "Para la segunda parte, sabemos por la tabla que la integral de $$\\cos(x)$$ es $$\\sin(x)$$. $$ \\int \\cos(x) \\,dx = \\sin(x) $$" },
-                            { step: 4, text: "Juntamos los resultados y añadimos la constante de integración: $$ x^3 + \\sin(x) + C $$" }
-                        ]
-                    },
-                    exercises: [
-                        "$$ \\int (5x^4 - 2x + 7) \\,dx $$",
-                        "$$ \\int (e^x + \\sec^2(x)) \\,dx $$",
-                        "$$ \\int \\frac{1}{x} \\,dx $$"
-                    ]
-                }
-            },
-            {
-                id: 'sustitucion',
-                title: 'Método de Sustitución',
-                content: {
-                    when: "Es la 'Regla de la Cadena' a la inversa. Úsalo cuando veas una función y su derivada (o un múltiplo de ella) multiplicándose dentro de la misma integral.",
-                    recipe: [
-                        "Elige una parte de la integral como 'u' (generalmente lo que está dentro de un paréntesis, una raíz o el exponente).",
-                        "Calcula la derivada de 'u' con respecto a x: du/dx.",
-                        "Despeja 'dx' o el grupo 'f'(x)dx'.",
-                        "Sustituye 'u' y 'du' en la integral original. Si lo hiciste bien, todas las 'x' deberían desaparecer.",
-                        "Resuelve la nueva integral en términos de 'u'.",
-                        "Vuelve a sustituir 'u' por su expresión original en 'x'."
-                    ],
-                    example: {
-                        problem: "$$ \\int 2x \\sqrt{x^2+1} \\,dx $$",
-                        solution: [
-                            { step: 1, text: "Identificamos una función ($$x^2+1$$) y su derivada ($$2x$$). Elegimos $$ u = x^2+1 $$." },
-                            { step: 2, text: "Calculamos la derivada: $$ \\frac{du}{dx} = 2x $$." },
-                            { step: 3, text: "Despejamos $$du$$: $$ du = 2x \\,dx $$." },
-                            { step: 4, text: "Sustituimos en la integral. Observa que $$2x \\,dx$$ se reemplaza por $$du$$ y $$x^2+1$$ por $$u$$: $$ \\int \\sqrt{u} \\,du = \\int u^{1/2} \\,du $$" },
-                            { step: 5, text: "Resolvemos la integral simple con la regla de la potencia: $$ \\frac{u^{1/2+1}}{1/2+1} = \\frac{u^{3/2}}{3/2} = \\frac{2}{3}u^{3/2} + C $$" },
-                            { step: 6, text: "Volvemos a la variable original 'x': $$ \\frac{2}{3}(x^2+1)^{3/2} + C $$" }
-                        ]
-                    },
-                    exercises: [
-                        "$$ \\int \\cos(x) \\sin^3(x) \\,dx $$",
-                        "$$ \\int \\frac{e^{\\sqrt{x}}}{\\sqrt{x}} \\,dx $$",
-                        "$$ \\int (x+1)^5 \\,dx $$"
-                    ]
-                }
-            },
-            {
-                id: 'partes',
-                title: 'Integración por Partes',
-                content: {
-                    when: "Usa este método cuando tienes el producto de dos funciones que no se simplifican con la sustitución. Típicamente, una función polinómica por una trigonométrica o exponencial (ej. $$\\int x e^x dx$$).",
-                    recipe: [
-                        "Aplica la fórmula: ∫u dv = uv - ∫v du.",
-                        "Elige 'u' y 'dv' del integrando original. Una buena regla es LIATE (Logarítmicas, Inversas, Algebraicas, Trigonométricas, Exponenciales). La que aparezca primero en la lista es una buena candidata para 'u'.",
-                        "Calcula 'du' (derivando 'u') y 'v' (integrando 'dv').",
-                        "Sustituye todo en la fórmula.",
-                        "Resuelve la nueva integral ∫v du. A veces, hay que volver a aplicar el método."
-                    ],
-                    example: {
-                        problem: "$$ \\int x \\cos(x) \\,dx $$",
-                        solution: [
-                            { step: 1, text: "Tenemos un producto de una algebraica ($$x$$) y una trigonométrica ($$\\cos(x)$$). Siguiendo LIATE, elegimos $$ u = x $$ y $$ dv = \\cos(x) \\,dx $$." },
-                            { step: 2, text: "Derivamos 'u' e integramos 'dv': $$ du = dx $$ y $$ v = \\int \\cos(x) \\,dx = \\sin(x) $$." },
-                            { step: 3, text: "Aplicamos la fórmula $$ uv - \\int v \\,du $$: $$ x \\sin(x) - \\int \\sin(x) \\,dx $$" },
-                            { step: 4, text: "Resolvemos la integral restante: $$ \\int \\sin(x) \\,dx = -\\cos(x) $$." },
-                            { step: 5, text: "Juntamos todo: $$ x \\sin(x) - (-\\cos(x)) + C = x \\sin(x) + \\cos(x) + C $$" }
-                        ]
-                    },
-                    exercises: [
-                        "$$ \\int x e^x \\,dx $$",
-                        "$$ \\int \\ln(x) \\,dx $$ (Pista: u = ln(x), dv = dx)",
-                        "$$ \\int x^2 \\sin(x) \\,dx $$ (Requiere dos aplicaciones)"
-                    ]
-                }
-            },
-            {
-                id: 'fracciones_simples',
-                title: 'Fracciones Simples',
-                content: {
-                    when: "Se usa para integrar funciones racionales (un polinomio dividido por otro), donde el denominador se puede factorizar en términos lineales distintos.",
-                    recipe: [
-                        "Asegúrate que el grado del numerador es menor que el del denominador. Si no, haz una división larga primero.",
-                        "Factoriza el denominador completamente. Por ejemplo: $$x^2 - 4 = (x-2)(x+2)$$.",
-                        "Descompón la fracción en una suma de fracciones más simples. Para cada factor lineal $$(ax+b)$$, se crea un término $$A/(ax+b)$$.",
-                        "Encuentra los valores de las constantes (A, B, C...) resolviendo el sistema de ecuaciones.",
-                        "Integra cada fracción simple por separado. Serán integrales de logaritmos naturales."
-                    ],
-                    example: {
-                        problem: "$$ \\int \\frac{1}{x^2 - 4} \\,dx $$",
-                        solution: [
-                            { step: 1, text: "Factorizamos el denominador: $$ x^2 - 4 = (x-2)(x+2) $$." },
-                            { step: 2, text: "Descomponemos la fracción: $$ \\frac{1}{(x-2)(x+2)} = \\frac{A}{x-2} + \\frac{B}{x+2} $$." },
-                            { step: 3, text: "Multiplicamos todo por el denominador común para eliminar las fracciones: $$ 1 = A(x+2) + B(x-2) $$." },
-                            { step: 4, text: "Para encontrar A y B, usamos valores inteligentes. Si x=2: $$1 = A(4) \\Rightarrow A = 1/4$$. Si x=-2: $$1 = B(-4) \\Rightarrow B = -1/4$$. " },
-                            { step: 5, text: "Reescribimos la integral: $$ \\int \\left( \\frac{1/4}{x-2} - \\frac{1/4}{x+2} \\right) \\,dx = \\frac{1}{4}\\int \\frac{1}{x-2}\\,dx - \\frac{1}{4}\\int \\frac{1}{x+2}\\,dx $$" },
-                            { step: 6, text: "Integramos: $$ \\frac{1}{4}\\ln|x-2| - \\frac{1}{4}\\ln|x+2| + C $$" }
-                        ]
-                    },
-                    exercises: [
-                        "$$ \\int \\frac{5x-3}{x^2-2x-3} \\,dx $$",
-                        "$$ \\int \\frac{1}{x(x+1)} \\,dx $$"
-                    ]
-                }
-            },
-            {
-                id: 'aproximacion',
-                title: 'Aproximación Numérica',
-                content: {
-                    when: "Cuando una integral es muy difícil o imposible de resolver analíticamente, usamos métodos numéricos para encontrar un valor aproximado de la integral definida.",
-                    recipe: [
-                        "**Regla del Trapecio:** Divide el área bajo la curva en 'n' trapecios. La fórmula es: $$ \\int_a^b f(x)dx \\approx \\frac{\\Delta x}{2} [f(x_0) + 2f(x_1) + ... + 2f(x_{n-1}) + f(x_n)] $$, donde $$\\Delta x = (b-a)/n$$.",
-                        "**Regla de Simpson:** Es más precisa porque usa parábolas. Requiere un número par de intervalos 'n'. La fórmula es: $$ \\int_a^b f(x)dx \\approx \\frac{\\Delta x}{3} [f(x_0) + 4f(x_1) + 2f(x_2) + ... + 4f(x_{n-1}) + f(x_n)] $$."
-                    ],
-                    example: {
-                        problem: "Aproximar $$ \\int_0^2 x^2 \\,dx $$ usando la Regla del Trapecio con n=4.",
-                        solution: [
-                            { step: 1, text: "Calculamos $$\\Delta x = (2-0)/4 = 0.5$$. Los puntos de x serán: 0, 0.5, 1, 1.5, 2." },
-                            { step: 2, text: "Calculamos f(x) = x² en cada punto: f(0)=0, f(0.5)=0.25, f(1)=1, f(1.5)=2.25, f(2)=4." },
-                            { step: 3, text: "Aplicamos la fórmula del Trapecio: $$ T_4 = \\frac{0.5}{2} [f(0) + 2f(0.5) + 2f(1) + 2f(1.5) + f(2)] $$" },
-                            { step: 4, text: "Sustituimos los valores: $$ T_4 = 0.25 [0 + 2(0.25) + 2(1) + 2(2.25) + 4] = 0.25 [0 + 0.5 + 2 + 4.5 + 4] = 0.25 [11] = 2.75 $$" },
-                            { step: 5, text: "El valor exacto es $$ \\int_0^2 x^2 dx = [x^3/3]_0^2 = 8/3 \\approx 2.667 $$. Nuestra aproximación es bastante buena." }
-                        ]
-                    },
-                    exercises: [
-                        "Usa la Regla de Simpson con n=4 para aproximar la misma integral $$ \\int_0^2 x^2 \\,dx $$ y compara el resultado.",
-                        "Aproxima $$ \\int_1^2 \\frac{1}{x} \\,dx $$ con la Regla del Trapecio y n=4. (El valor exacto es ln(2) ≈ 0.693)."
-                    ]
-                }
-            }
+            { id: 'inmediatas', title: 'Integrales Inmediatas', content: { when: "Usa este método cuando la función a integrar (el integrando) es la derivada directa de una función conocida (potencias, exponenciales, trigonométricas, etc.). Son las más básicas y se resuelven consultando una tabla de integrales.", recipe: ["Identifica la forma de la función.", "Busca en tu tabla de integrales la fórmula correspondiente.", "Aplica la fórmula y no olvides sumar la constante de integración 'C'."], example: { problem: "$$ \\int (3x^2 + \\cos(x)) \\,dx $$", solution: [{ step: 1, text: "Separamos la integral en dos partes usando la propiedad de la suma: $$ \\int 3x^2 \\,dx + \\int \\cos(x) \\,dx $$" }, { step: 2, text: "Para la primera parte, usamos la regla de la potencia $$\\int x^n \\,dx = \\frac{x^{n+1}}{n+1}$$. Sacamos la constante 3: $$ 3 \\int x^2 \\,dx = 3 \\left(\\frac{x^{2+1}}{2+1}\\right) = 3 \\left(\\frac{x^3}{3}\\right) = x^3 $$" }, { step: 3, text: "Para la segunda parte, sabemos por la tabla que la integral de $$\\cos(x)$$ es $$\\sin(x)$$. $$ \\int \\cos(x) \\,dx = \\sin(x) $$" }, { step: 4, text: "Juntamos los resultados y añadimos la constante de integración: $$ x^3 + \\sin(x) + C $$" }] }, exercises: ["$$ \\int (5x^4 - 2x + 7) \\,dx $$", "$$ \\int (e^x + \\sec^2(x)) \\,dx $$", "$$ \\int \\frac{1}{x} \\,dx $$"] } },
+            { id: 'sustitucion', title: 'Método de Sustitución', content: { when: "Es la 'Regla de la Cadena' a la inversa. Úsalo cuando veas una función y su derivada (o un múltiplo de ella) multiplicándose dentro de la misma integral.", recipe: ["Elige una parte de la integral como 'u' (generalmente lo que está dentro de un paréntesis, una raíz o el exponente).", "Calcula la derivada de 'u' con respecto a x: du/dx.", "Despeja 'dx' o el grupo 'f'(x)dx'.", "Sustituye 'u' y 'du' en la integral original. Si lo hiciste bien, todas las 'x' deberían desaparecer.", "Resuelve la nueva integral en términos de 'u'.", "Vuelve a sustituir 'u' por su expresión original en 'x'."], example: { problem: "$$ \\int 2x \\sqrt{x^2+1} \\,dx $$", solution: [{ step: 1, text: "Identificamos una función ($$x^2+1$$) y su derivada ($$2x$$). Elegimos $$ u = x^2+1 $$." }, { step: 2, text: "Calculamos la derivada: $$ \\frac{du}{dx} = 2x $$." }, { step: 3, text: "Despejamos $$du$$: $$ du = 2x \\,dx $$." }, { step: 4, text: "Sustituimos en la integral. Observa que $$2x \\,dx$$ se reemplaza por $$du$$ y $$x^2+1$$ por $$u$$: $$ \\int \\sqrt{u} \\,du = \\int u^{1/2} \\,du $$" }, { step: 5, text: "Resolvemos la integral simple con la regla de la potencia: $$ \\frac{u^{1/2+1}}{1/2+1} = \\frac{u^{3/2}}{3/2} = \\frac{2}{3}u^{3/2} + C $$" }, { step: 6, text: "Volvemos a la variable original 'x': $$ \\frac{2}{3}(x^2+1)^{3/2} + C $$" }] }, exercises: ["$$ \\int \\cos(x) \\sin^3(x) \\,dx $$", "$$ \\int \\frac{e^{\\sqrt{x}}}{\\sqrt{x}} \\,dx $$", "$$ \\int (x+1)^5 \\,dx $$"] } },
+            { id: 'partes', title: 'Integración por Partes', content: { when: "Usa este método cuando tienes el producto de dos funciones que no se simplifican con la sustitución. Típicamente, una función polinómica por una trigonométrica o exponencial (ej. $$\\int x e^x dx$$).", recipe: ["Aplica la fórmula: ∫u dv = uv - ∫v du.", "Elige 'u' y 'dv' del integrando original. Una buena regla es LIATE (Logarítmicas, Inversas, Algebraicas, Trigonométricas, Exponenciales). La que aparezca primero en la lista es una buena candidata para 'u'.", "Calcula 'du' (derivando 'u') y 'v' (integrando 'dv').", "Sustituye todo en la fórmula.", "Resuelve la nueva integral ∫v du. A veces, hay que volver a aplicar el método."], example: { problem: "$$ \\int x \\cos(x) \\,dx $$", solution: [{ step: 1, text: "Tenemos un producto de una algebraica ($$x$$) y una trigonométrica ($$\\cos(x)$$). Siguiendo LIATE, elegimos $$ u = x $$ y $$ dv = \\cos(x) \\,dx $$." }, { step: 2, text: "Derivamos 'u' e integramos 'dv': $$ du = dx $$ y $$ v = \\int \\cos(x) \\,dx = \\sin(x) $$." }, { step: 3, text: "Aplicamos la fórmula $$ uv - \\int v \\,du $$: $$ x \\sin(x) - \\int \\sin(x) \\,dx $$" }, { step: 4, text: "Resolvemos la integral restante: $$ \\int \\sin(x) \\,dx = -\\cos(x) $$." }, { step: 5, text: "Juntamos todo: $$ x \\sin(x) - (-\\cos(x)) + C = x \\sin(x) + \\cos(x) + C $$" }] }, exercises: ["$$ \\int x e^x \\,dx $$", "$$ \\int \\ln(x) \\,dx $$ (Pista: u = ln(x), dv = dx)", "$$ \\int x^2 \\sin(x) \\,dx $$ (Requiere dos aplicaciones)"] } },
+            { id: 'fracciones_simples', title: 'Fracciones Simples', content: { when: "Se usa para integrar funciones racionales (un polinomio dividido por otro), donde el denominador se puede factorizar en términos lineales distintos.", recipe: ["Asegúrate que el grado del numerador es menor que el del denominador. Si no, haz una división larga primero.", "Factoriza el denominador completamente. Por ejemplo: $$x^2 - 4 = (x-2)(x+2)$$.", "Descompón la fracción en una suma de fracciones más simples. Para cada factor lineal $$(ax+b)$$, se crea un término $$A/(ax+b)$$.", "Encuentra los valores de las constantes (A, B, C...) resolviendo el sistema de ecuaciones.", "Integra cada fracción simple por separado. Serán integrales de logaritmos naturales."], example: { problem: "$$ \\int \\frac{1}{x^2 - 4} \\,dx $$", solution: [{ step: 1, text: "Factorizamos el denominador: $$ x^2 - 4 = (x-2)(x+2) $$." }, { step: 2, text: "Descomponemos la fracción: $$ \\frac{1}{(x-2)(x+2)} = \\frac{A}{x-2} + \\frac{B}{x+2} $$." }, { step: 3, text: "Multiplicamos todo por el denominador común para eliminar las fracciones: $$ 1 = A(x+2) + B(x-2) $$." }, { step: 4, text: "Para encontrar A y B, usamos valores inteligentes. Si x=2: $$1 = A(4) \\Rightarrow A = 1/4$$. Si x=-2: $$1 = B(-4) \\Rightarrow B = -1/4$$. " }, { step: 5, text: "Reescribimos la integral: $$ \\int \\left( \\frac{1/4}{x-2} - \\frac{1/4}{x+2} \\right) \\,dx = \\frac{1}{4}\\int \\frac{1}{x-2}\\,dx - \\frac{1}{4}\\int \\frac{1}{x+2}\\,dx $$" }, { step: 6, text: "Integramos: $$ \\frac{1}{4}\\ln|x-2| - \\frac{1}{4}\\ln|x+2| + C $$" }] }, exercises: ["$$ \\int \\frac{5x-3}{x^2-2x-3} \\,dx $$", "$$ \\int \\frac{1}{x(x+1)} \\,dx $$"] } },
+            { id: 'aproximacion', title: 'Aproximación Numérica', content: { when: "Cuando una integral es muy difícil o imposible de resolver analíticamente, usamos métodos numéricos para encontrar un valor aproximado de la integral definida.", recipe: ["**Regla del Trapecio:** Divide el área bajo la curva en 'n' trapecios. La fórmula es: $$ \\int_a^b f(x)dx \\approx \\frac{\\Delta x}{2} [f(x_0) + 2f(x_1) + ... + 2f(x_{n-1}) + f(x_n)] $$, donde $$\\Delta x = (b-a)/n$$.", "**Regla de Simpson:** Es más precisa porque usa parábolas. Requiere un número par de intervalos 'n'. La fórmula es: $$ \\int_a^b f(x)dx \\approx \\frac{\\Delta x}{3} [f(x_0) + 4f(x_1) + 2f(x_2) + ... + 4f(x_{n-1}) + f(x_n)] $$."], example: { problem: "Aproximar $$ \\int_0^2 x^2 \\,dx $$ usando la Regla del Trapecio con n=4.", solution: [{ step: 1, text: "Calculamos $$\\Delta x = (2-0)/4 = 0.5$$. Los puntos de x serán: 0, 0.5, 1, 1.5, 2." }, { step: 2, text: "Calculamos f(x) = x² en cada punto: f(0)=0, f(0.5)=0.25, f(1)=1, f(1.5)=2.25, f(2)=4." }, { step: 3, text: "Aplicamos la fórmula del Trapecio: $$ T_4 = \\frac{0.5}{2} [f(0) + 2f(0.5) + 2f(1) + 2f(1.5) + f(2)] $$" }, { step: 4, text: "Sustituimos los valores: $$ T_4 = 0.25 [0 + 2(0.25) + 2(1) + 2(2.25) + 4] = 0.25 [0 + 0.5 + 2 + 4.5 + 4] = 0.25 [11] = 2.75 $$" }, { step: 5, text: "El valor exacto es $$ \\int_0^2 x^2 dx = [x^3/3]_0^2 = 8/3 \\approx 2.667 $$. Nuestra aproximación es bastante buena." }] }, exercises: ["Usa la Regla de Simpson con n=4 para aproximar la misma integral $$ \\int_0^2 x^2 \\,dx $$ y compara el resultado.", "Aproxima $$ \\int_1^2 \\frac{1}{x} \\,dx $$ con la Regla del Trapecio y n=4. (El valor exacto es ln(2) ≈ 0.693)."] } }
         ];
 
         // --- COMPONENTES DE REACT ---
@@ -310,9 +42,6 @@
             const contentRef = useRef(null);
 
             useEffect(() => {
-                // Cada vez que el tema cambie, se ejecuta este efecto.
-                // Busca el script de KaTeX y, si está cargado, renderiza las matemáticas
-                // solo dentro del contenedor del contenido actual para mayor eficiencia.
                 if (window.renderMathInElement && contentRef.current) {
                     window.renderMathInElement(contentRef.current, {
                         delimiters: [
@@ -321,32 +50,18 @@
                         ]
                     });
                 }
-            }, [topic]); // Se ejecuta solo cuando 'topic' cambia
+            }, [topic]);
 
-            if (!topic) {
-                return (
-                    <main className="main-content">
-                        <div className="topic-header">
-                            <h2>Bienvenido a IntegraX</h2>
-                        </div>
-                        <p>Selecciona un tema del menú para comenzar a dominar el cálculo integral.</p>
-                    </main>
-                );
-            }
+            if (!topic) return null;
 
             const { title, content } = topic;
 
             return (
                 <main className="main-content" ref={contentRef}>
-                    <div className="topic-header">
-                        <h2>{title}</h2>
-                    </div>
-
+                    <div className="topic-header"><h2>{title}</h2></div>
                     <div className="section">
-                        <h3>¿Cuándo usar este método?</h3>
-                        <p>{content.when}</p>
+                        <h3>¿Cuándo usar este método?</h3><p>{content.when}</p>
                     </div>
-
                     <div className="section">
                         <h3>La Receta (Paso a Paso)</h3>
                         {content.recipe.map((stepText, index) => (
@@ -356,7 +71,6 @@
                             </div>
                         ))}
                     </div>
-
                     <div className="section">
                         <h3>Ejemplo Resuelto</h3>
                         <p><strong>Problema:</strong> {content.example.problem}</p>
@@ -367,7 +81,6 @@
                             </div>
                         ))}
                     </div>
-                    
                     <div className="section">
                         <h3>Ejercicios para Practicar</h3>
                         <ol className="exercise-list">
@@ -388,11 +101,7 @@
                         <h1>IntegraX</h1>
                         <ul>
                             {integralTopics.map(topic => (
-                                <li
-                                    key={topic.id}
-                                    className={topic.id === activeTopicId ? 'active' : ''}
-                                    onClick={() => setActiveTopicId(topic.id)}
-                                >
+                                <li key={topic.id} className={topic.id === activeTopicId ? 'active' : ''} onClick={() => setActiveTopicId(topic.id)}>
                                     {topic.title}
                                 </li>
                             ))}
@@ -403,8 +112,13 @@
             );
         }
 
-        const root = ReactDOM.createRoot(document.getElementById('root'));
-        root.render(<App />);
+        // ---- LA SOLUCIÓN CLAVE ----
+        // Espera a que el DOM esté completamente cargado antes de inicializar React.
+        // Esto previene errores de "pantalla en blanco" por scripts que no han cargado a tiempo.
+        document.addEventListener('DOMContentLoaded', () => {
+            const root = ReactDOM.createRoot(document.getElementById('root'));
+            root.render(<App />);
+        });
 
     </script>
 </body>
